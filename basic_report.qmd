@@ -1,0 +1,28 @@
+---
+title: "Generative Image Modeling with Autoencoders and WGAN-GP"
+format: 
+  html:
+    theme: superhero
+author: "CJ Jones"
+date: 4/30/2025
+---
+
+## Project Overview
+
+This project was developed to explore real-time object detection and image classification techniques with applications in American Sign Language recognition. The goal was to create an end-to-end system capable of detecting hand regions in a video stream and classifying the corresponding ASL letters using deep learning models. The work focused on implementing a two-stage detection-classification pipeline, with YOLOv8 used for real-time bounding box prediction and a ResNet18-based classifier used to identify the hand sign within each region of interest.
+
+## Workflow Structure
+
+The project workflow was divided into two major components: hand detection and letter classification. A YOLOv8 model was trained using a dataset containing labeled bounding boxes of hands performing various signs. This model was responsible for identifying and extracting hand regions from webcam video frames. A separate image classification model was then built to predict the corresponding ASL letter from each detected crop. The letter classifier was trained using multiple datasets, including a custom-labeled set and the publicly available ASL Alphabet dataset from Kaggle. Class balance and per-class sampling limits were enforced during dataset construction to ensure even representation across all 26 letters.
+
+To enable real-time interaction, a Streamlit web application was developed. The application interfaces with the system camera to collect live video frames, applies YOLO-based hand detection, and feeds a sequence of hand crops into the classification model. Letter predictions were aggregated over multiple frames to increase robustness and prevent spurious misclassifications from single-frame noise.
+
+## Model Architecture and Training Process
+
+The hand detection model was trained using the Ultralytics implementation of YOLOv8. Training data was annotated in the YOLO format and split into training and validation sets with structured directory organization. The model was trained using standard augmentation techniques and optimized for inference speed and accuracy. Once trained, the best-performing weights were saved and loaded into the Streamlit app for real-time use.
+
+For the classification task, a ResNet18 model was used as the backbone. The final fully connected layer was replaced with a multi-layer sequential head including batch normalization, dropout, and multiple dense layers to improve generalization. The model was trained on a mix of preprocessed ASL image datasets, with normalization and resizing applied using torchvision transforms. The Adam optimizer was used for training, and categorical cross-entropy served as the loss function. To ensure balanced learning across classes, a maximum image count per letter was enforced, and performance was monitored through accuracy and confusion matrix visualizations.
+
+## Conclusion
+
+The final system was deployed through a Streamlit app, enabling real-time webcam-based recognition of ASL letters. The app integrates hand detection and letter classification into a seamless pipeline and provides users with a responsive, interpretable interface for testing hand signs. The project demonstrated the feasibility of combining modern object detection and classification tools for interactive gesture recognition tasks and provided a flexible platform for future expansion or educational deployment.
