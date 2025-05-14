@@ -1,0 +1,17 @@
+services:
+  # --- Streamlit web service ----------------------------------------
+  - type: web
+    name: Object-Detector-App
+    runtime: python
+    region: virginia        # or frankfurt, singapore…
+    plan: free            # upgrade later if you need GPU/RAM
+    buildCommand: |
+      pip install -r requirements.txt
+    startCommand: |
+      streamlit run app.py \
+        --server.port=8501 \
+        --server.address=0.0.0.0
+    envVars:              # only if you need env vars
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    autoDeploy: true
